@@ -9,6 +9,8 @@ RUN mkdir /sqsd
 # Copy sqsd source including
 COPY ./ /sqsd
 
+RUN cd /sqsd && npm install
+
 # Run sqsd
 WORKDIR /sqsd
 CMD ["node", "run-cli.js"]
