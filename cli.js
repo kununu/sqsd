@@ -29,13 +29,14 @@ program.version(pkg.version)
     .option('-t, --timeout [value]', 'Timeout for waiting response from worker, ms' )
     .option('--worker-health-url [value]', 'Url for checking that worker is running, useful when running in linked containers and worker needs some time to  up' )
     .option('--worker-health-wait-time [value]', 'Timeout for waiting while worker become  health, ms' )
+    .option('--worker-ssl-enabled [value]', 'Check for valid ssl when posting to worker')
     .option('--wait-time [value]', 'Long polling wait time when querying the queue.', parseInt)
     .option('--content-type [value]', 'Long polling wait time when querying the queue.' )
     .option('--concurrency [value]', 'Long polling wait time when querying the queue.', parseInt,  3  )
-    .option('--user-agent [value]', 'User agent',  "sqsd"  )
+    .option('--user-agent [value]', 'User agent')
     .option('--env [value]', 'Path to .env file to load environment variables from. Optional', '.env')
     .option('--ssl-enabled [value]', 'To enable ssl or not. Default is true')
-    .option('-v, --verbose', 'A value that can be increased', increaseVerbosity, 0)
+    .option('-v, --verbose', 'A value that can be increased', increaseVerbosity)
 
 
 process.argv[1] = 'sqsd';
@@ -47,13 +48,14 @@ var defaults = {
     , daemonized: false
     , sleep: 0
     , waitTime: 20
-    , userAgent: "sqsd"
+    , userAgent: "aws-sqsd"
     , contentType: 'application/json'
     , concurrency: 3
     , timeout: 60000
     , workerHealthWaitTime: 10000
+    , workerSslEnabled: true
     , sslEnabled: true
-    , verbose: 0
+    , verbose: 2
 }
 
 dotenv.config({
@@ -76,6 +78,7 @@ var envParams = { accessKeyId: process.env.AWS_ACCESS_KEY_ID
     , timeout: process.env.SQSD_WORKER_TIMEOUT
     , workerHealthUrl: process.env.SQSD_WORKER_HEALTH_URL
     , workerHealthWaitTime: process.env.SQSD_WORKER_HEALTH_WAIT_TIME
+    , workerSslEnabled: process.env.SQSD_WORKER_SSL_ENABLED
     , endpointUrl: process.env.SQSD_ENDPOINT_URL
     , queueName: process.env.SQSD_QUEUE_NAME
     , sslEnabled: process.env.SQSD_SSL_ENABLED
